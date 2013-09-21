@@ -53,7 +53,7 @@ function rotate(rot){
 		easing: "ease-in-out-cubic"
 	});
 }
-rotate(100);
+
 
 
 function changeDistance(num){
