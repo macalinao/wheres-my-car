@@ -58,7 +58,6 @@ rotate(100);
 
 function changeDistance(num){
 	$('#distance').text(num.toString() + " ft");
-
 }
 
 /*
