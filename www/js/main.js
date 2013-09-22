@@ -17,32 +17,17 @@ document.addEventListener('deviceready', function() {
 		canvas.height = $(document).height();
 	}
 
-	var arrow = canvas.display.polygon({
-		x: canvas.width/2,
-		y: canvas.height/2 - 100,
-		origin: {x: "center", y: "center"},
-		sides: 3,
-		radius: canvas.height/4,
-		rotation: 270,
-		fill: "#DEDEDE",
-		clickable_value: 0
+	var arrow = canvas.display.image({
+	origin: { x: "center", y: "center" },
+	image: "img/pointer.png"
+	x: canvas.width/2,
+	y: (canvas.height/2)*(4/5),
+	origin: {x: "center", y: "center"},
+	clickable_value: 0
 	});
-	var innerArrow = canvas.display.polygon({
-		x: arrow.radius/2,
-		y: 0,
-		origin: {x: 0, y:0},
-		sides: 3,
-		radius: arrow.radius/2,
-		rotation: 0,
-		fill: "#5CD65C",
-		zIndex: "front",
-		clickable_value: 0
-	});
+
 	$('#distance').css("top", canvas.height-arrow.x/5);
-
-
 	canvas.addChild(arrow);
-	arrow.addChild(innerArrow);
 
 	function rotate(rot){
 		arrow.animate({
