@@ -36,14 +36,14 @@ document.addEventListener('deviceready', function() {
 			rotation: rot
 		}, {
 			duration: 500,
-			easing: "ease-in-out-cubic"
+			easing: "linear"
 		});
 
 		innerArrow.animate({
 			rotation: arrow.rotation - 270
 		}, {
 			duration: 500,
-			easing: "ease-in-out-cubic"
+			easing: "linear"
 		});
 	} 
 
