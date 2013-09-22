@@ -21,7 +21,7 @@ document.addEventListener('deviceready', function() {
 
 	var arrow = canvas.display.image({
 	origin: { x: "center", y: "center" },
-	image: "img/pointer.png"
+	image: "img/pointer.png",
 	x: canvas.width/2,
 	y: (canvas.height/2)*(4/5),
 	origin: {x: "center", y: "center"},
@@ -81,6 +81,7 @@ document.addEventListener('deviceready', function() {
 
 			pos.dist = feet;
 			pos.bearing = dab.bearing;
+			setTimeout(updatePos, 1);
 		}, function(err) {
 			$('#distance').text(err);
 			setTimeout(updatePos, 1);
