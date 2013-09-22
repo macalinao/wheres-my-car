@@ -22,13 +22,13 @@ document.addEventListener('deviceready', function() {
 	var arrow = canvas.display.image({
 	origin: { x: "center", y: "center" },
 	image: "img/pointer.png",
-	x: canvas.width/2,
-	y: (canvas.height/2)*(4/5),
+	x: canvas.width/4,
+	y: (canvas.height/4)*(4/5),
 	origin: {x: "center", y: "center"},
 	clickable_value: 0
 	});
 
-	$('#distance').css("top", (canvas.height-arrow.y)/5);
+	$('#distance').css("top", arrow.x+100);
 	canvas.addChild(arrow);
 
 	function rotate(rot){
