@@ -1,3 +1,8 @@
+var home = {lat: 32.78108, lon: -96.79099};
+
+var RAD = Math.PI / 180;
+var DEG = 180 / Math.PI;
+
 document.addEventListener('deviceready', function() {
 	var canvas = oCanvas.create({ 
 	    canvas: "#canvas", 
@@ -48,14 +53,46 @@ document.addEventListener('deviceready', function() {
 		innerArrow.animate({
 			rotation: arrow.rotation - 270
 		}, {
-			duration:1000,
+			duration: 1000,
 			easing: "ease-in-out-cubic"
 		});
+	} 
+
+	function distAndBear(p1, p2) {
+		// Distance
+		var R = 6371; // km of radius of earth
+		var dLat = (p2.lat - p1.lat) * RAD;
+		var dLon = (p2.lon - p1.lon) * RAD;
+		var lat1 = p1.lat * RAD;
+		var lat2 = p2.lat * RAD;
+
+		var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+		        Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2); 
+		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
+		var d = R * c;
+
+		// Bearing
+		var y = Math.sin(dLon) * Math.cos(lat2);
+		var x = Math.cos(lat1) * Math.sin(lat2) -
+		        Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+		var b = Math.atan2(y, x) * DEG;
+
+		return {
+			distance: d, // Km
+			bearing: b // Deg
+		};
 	}
 
 	function updatePos() {
 		navigator.geolocation.getCurrentPosition(function(pos) {
-			$('#distance').text(pos.coords.latitude + "\n" + pos.coords.longitude);
+			var dab = distAndBear({lat: pos.coords.latitude, lon: pos.coords.longitude}, home);
+
+			var dist = dab.distance * 1000;
+			var feet = Math.round(dist * 3.28084);
+
+			$('#distance').text(feet + " ft");
+
+			rotate(dab.bearing); 
 			setTimeout(updatePos, 50);
 		}, function(err) {
 			$('#distance').text(err);
