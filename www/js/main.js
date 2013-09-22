@@ -4,6 +4,8 @@ var home = {lat: 33.21219, lon: -97.15112};
 var RAD = Math.PI / 180;
 var DEG = 180 / Math.PI;
 
+var pos = {dist: 0, bearing: 0, heading: 0};
+
 document.addEventListener('deviceready', function() {
 	var canvas = oCanvas.create({ 
 	    canvas: "#canvas", 
@@ -33,13 +35,14 @@ document.addEventListener('deviceready', function() {
 		arrow.animate({
 			rotation: rot
 		}, {
-			duration: 0,
+			duration: 500,
 			easing: "ease-in-out-cubic"
 		});
+
 		innerArrow.animate({
 			rotation: arrow.rotation - 270
 		}, {
-			duration: 0,
+			duration: 500,
 			easing: "ease-in-out-cubic"
 		});
 	} 
@@ -76,19 +79,24 @@ document.addEventListener('deviceready', function() {
 			var dist = dab.distance * 1000;
 			var feet = Math.round(dist * 3.28084);
 
-			$('#distance').text(feet + " ft");
-
-			navigator.compass.getCurrentHeading(function(heading) {
-				rotate(dab.bearing + heading.magneticHeading);
-				setTimeout(updatePos, 1);
-			}, function(err) {
-				$('#distance').text(err);
-				setTimeout(updatePos, 1);
-			});
+			pos.dist = feet;
+			pos.bearing = dab.bearing;
 		}, function(err) {
 			$('#distance').text(err);
 			setTimeout(updatePos, 1);
 		});
 	}
 	updatePos();
+
+
+	navigator.compass.watchHeading(function(heading) {
+		pos.heading = heading.magneticHeading;
+	}, function(err) {
+		$('#distance').text(err);
+	});
+
+	setInterval(function() {
+		$('#distance').text(pos.dist + ' ft');
+		rotate(pos.bearing + pos.heading);
+	}, 500);
 });
