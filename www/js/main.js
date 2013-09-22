@@ -61,11 +61,27 @@ function changeDistance(num){
 function onCompassError(error){
 	$('#distance').text("Cannot get location");
 }
+/*
 setInterval(function(){ 
-	navigator.compass.getCurrentHeading(function(heading){
+	navigator.compass.getCurrentHeading(function(){
 		rotate(heading);
-	}, onCompassError(compassError), compassOptions);
-}, 100);
+	}, onCompassError, compassOptions);
+}, 1000);
+*/
+function onSuccess(heading) {
+    alert('Heading: ' + heading.magneticHeading);
+};
+
+function onError(error) {
+    alert('CompassError: ' + error.code);
+};
+
+navigator.compass.getCurrentHeading(onSuccess, onError);
+/*
+$('#distance').text(navigator.compass.getCurrentHeading(function(){
+		rotate(heading);
+	}, onCompassError, compassOptions);
+}, 1000););
 /*
 Use rotate(rot) and changeDistance(num) to manipulate rotation of arrow and remaining distance
 rot = value 0-360 to describe rotation (it starts at 270) to describe forward
