@@ -85,31 +85,25 @@ document.addEventListener('deviceready', function() {
 	}
 
 	function updatePos() {
-		// navigator.geolocation.getCurrentPosition(function(pos) {
-		// 	var dab = distAndBear({lat: pos.coords.latitude, lon: pos.coords.longitude}, home);
+		navigator.geolocation.getCurrentPosition(function(pos) {
+			var dab = distAndBear({lat: pos.coords.latitude, lon: pos.coords.longitude}, home);
 
-		// 	var dist = dab.distance * 1000;
-		// 	var feet = Math.round(dist * 3.28084);
+			var dist = dab.distance * 1000;
+			var feet = Math.round(dist * 3.28084);
 
-		// 	$('#distance').text(feet + " ft");
+			$('#distance').text(feet + " ft");
 
 			navigator.compass.getCurrentHeading(function(heading) {
-				alert(heading.magneticHeading + ", ");
-				// rotate(dab.bearing + pos.coords.heading);
+				rotate(dab.bearing + heading.magneticHeading);
 				setTimeout(updatePos, 1);
 			}, function(err) {
-				var a = '';
-				for (var item in heading) {
-				  a += "property = " + item;
-				  a += "value = " + heading[item];
-				}
 				$('#distance').text(err);
 				setTimeout(updatePos, 1);
 			});
-		// }, function(err) {
-		// 	$('#distance').text(err);
-		// 	setTimeout(updatePos, 1);
-		// });
+		}, function(err) {
+			$('#distance').text(err);
+			setTimeout(updatePos, 1);
+		});
 	}
 	updatePos();
 });
