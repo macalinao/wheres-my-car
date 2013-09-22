@@ -1,4 +1,5 @@
-var home = {lat: 32.78108, lon: -96.79099};
+// var home = {lat: 32.78108, lon: -96.79099};
+var home = {lat: 33.21219, lon: -97.15112};
 
 var RAD = Math.PI / 180;
 var DEG = 180 / Math.PI;
@@ -47,13 +48,13 @@ document.addEventListener('deviceready', function() {
 		arrow.animate({
 			rotation: rot
 		}, {
-			duration:1000,
+			duration: 0,
 			easing: "ease-in-out-cubic"
 		});
 		innerArrow.animate({
 			rotation: arrow.rotation - 270
 		}, {
-			duration: 1000,
+			duration: 0,
 			easing: "ease-in-out-cubic"
 		});
 	} 
@@ -84,20 +85,31 @@ document.addEventListener('deviceready', function() {
 	}
 
 	function updatePos() {
-		navigator.geolocation.getCurrentPosition(function(pos) {
-			var dab = distAndBear({lat: pos.coords.latitude, lon: pos.coords.longitude}, home);
+		// navigator.geolocation.getCurrentPosition(function(pos) {
+		// 	var dab = distAndBear({lat: pos.coords.latitude, lon: pos.coords.longitude}, home);
 
-			var dist = dab.distance * 1000;
-			var feet = Math.round(dist * 3.28084);
+		// 	var dist = dab.distance * 1000;
+		// 	var feet = Math.round(dist * 3.28084);
 
-			$('#distance').text(feet + " ft");
+		// 	$('#distance').text(feet + " ft");
 
-			rotate(dab.bearing); 
-			setTimeout(updatePos, 50);
-		}, function(err) {
-			$('#distance').text(err);
-			setTimeout(updatePos, 50);
-		});
+			navigator.compass.getCurrentHeading(function(heading) {
+				alert(heading.magneticHeading + ", ");
+				// rotate(dab.bearing + pos.coords.heading);
+				setTimeout(updatePos, 1);
+			}, function(err) {
+				var a = '';
+				for (var item in heading) {
+				  a += "property = " + item;
+				  a += "value = " + heading[item];
+				}
+				$('#distance').text(err);
+				setTimeout(updatePos, 1);
+			});
+		// }, function(err) {
+		// 	$('#distance').text(err);
+		// 	setTimeout(updatePos, 1);
+		// });
 	}
 	updatePos();
 });
