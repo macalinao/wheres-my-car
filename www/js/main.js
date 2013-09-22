@@ -28,7 +28,7 @@ document.addEventListener('deviceready', function() {
 	clickable_value: 0
 	});
 
-	$('#distance').css("top", canvas.height-arrow.x/5);
+	$('#distance').css("top", (canvas.height-arrow.y)/5);
 	canvas.addChild(arrow);
 
 	function rotate(rot){
