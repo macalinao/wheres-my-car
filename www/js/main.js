@@ -1,5 +1,5 @@
-// var home = {lat: 32.78108, lon: -96.79099};
-var home = {lat: 33.21219, lon: -97.15112};
+var home = {lat: 32.78108, lon: -96.79099}; // place
+// var home = {lat: 33.21219, lon: -97.15112}; // mcconnell
 
 var RAD = Math.PI / 180;
 var DEG = 180 / Math.PI;
@@ -15,34 +15,34 @@ document.addEventListener('deviceready', function() {
 
 	var eCanvas = document.getElementById('canvas');
 	if (eCanvas.getContext) {
-		canvas.width = $(document).width();
-		canvas.height = $(document).height();
+		canvas.width = $(eCanvas).width();
+		canvas.height = $(eCanvas).height();
 	}
 
 	var arrow = canvas.display.image({
-	origin: { x: "center", y: "center" },
-	image: "img/pointer.png",
-	x: canvas.width/4,
-	y: (canvas.height/4)*(4/5),
-	origin: {x: "center", y: "center"},
-	clickable_value: 0
+		origin: { x: "center", y: "center" },
+		image: "img/pointer.png",
+		x: canvas.width / 2,
+		y: canvas.height / 2,
+		width: canvas.width,
+		clickable_value: 0
 	});
 
-	$('#distance').css("top", arrow.x+100);
+	$('#distance').css("top", arrow.x + 100);
 	canvas.addChild(arrow);
 
 	function rotate(rot){
 		arrow.animate({
 			rotation: rot
 		}, {
-			duration: 500,
+			duration: 50,
 			easing: "linear"
 		});
 
 		innerArrow.animate({
 			rotation: arrow.rotation - 270
 		}, {
-			duration: 500,
+			duration: 50,
 			easing: "linear"
 		});
 	} 
@@ -79,10 +79,7 @@ document.addEventListener('deviceready', function() {
 			var dist = dab.distance * 1000;
 			var feet = Math.round(dist * 3.28084);
 
-			var diff = pos.dist - feet;
-			if (Math.abs(diff) > 5) {
-				pos.dist = feet;
-			}
+			pos.dist = feet;
 			pos.bearing = dab.bearing;
 			setTimeout(updatePos, 1);
 		}, function(err) {
@@ -102,5 +99,5 @@ document.addEventListener('deviceready', function() {
 	setInterval(function() {
 		$('#distance').text(pos.dist + ' ft');
 		rotate(360 - pos.bearing - pos.heading);
-	}, 500);
+	}, 50);
 });
