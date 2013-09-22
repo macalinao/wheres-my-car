@@ -73,13 +73,16 @@ document.addEventListener('deviceready', function() {
 	}
 
 	function updatePos() {
-		navigator.geolocation.getCurrentPosition(function(pos) {
-			var dab = distAndBear({lat: pos.coords.latitude, lon: pos.coords.longitude}, home);
+		navigator.geolocation.watchPosition(function(p) {
+			var dab = distAndBear({lat: p.coords.latitude, lon: p.coords.longitude}, home);
 
 			var dist = dab.distance * 1000;
 			var feet = Math.round(dist * 3.28084);
 
-			pos.dist = feet;
+			var diff = pos.dist - feet;
+			if (Math.abs(diff) > 5) {
+				pos.dist = feet;
+			}
 			pos.bearing = dab.bearing;
 			setTimeout(updatePos, 1);
 		}, function(err) {
@@ -98,6 +101,6 @@ document.addEventListener('deviceready', function() {
 
 	setInterval(function() {
 		$('#distance').text(pos.dist + ' ft');
-		rotate(pos.bearing + pos.heading);
+		rotate(360 - pos.bearing - pos.heading);
 	}, 500);
 });
