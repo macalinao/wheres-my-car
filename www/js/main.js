@@ -54,12 +54,18 @@ function rotate(rot){
 	});
 }
 
-
-
 function changeDistance(num){
 	$('#distance').text(num.toString() + " ft");
 }
 
+function onCompassError(error){
+	$('#distance').text("Cannot get location");
+}
+setInterval(function(){ 
+	navigator.compass.getCurrentHeading(function(heading){
+		rotate(heading);
+	}, onCompassError(compassError), compassOptions);
+}, 100);
 /*
 Use rotate(rot) and changeDistance(num) to manipulate rotation of arrow and remaining distance
 rot = value 0-360 to describe rotation (it starts at 270) to describe forward
